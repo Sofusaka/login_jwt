@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_jwt/db.dart';
 import 'package:login_jwt/login_service.dart';
 
 class ProductoSingle extends StatefulWidget {
@@ -20,6 +21,13 @@ class ProductoSingle extends StatefulWidget {
     super.key,
   });
 
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nombre': nombre,
+    };
+  }
   @override
   _ProductoSingleState createState() => _ProductoSingleState();
 }
@@ -182,8 +190,12 @@ Future<void> _checkIfFavorite() async {
             ),
             onPressed: () {
               if (_isFavorite) {
+                DB.eliminar(widget.id);
+                DB.obtenerFavoritos(); // Eliminar de favoritos
                 _removeFromFavorites(); // Eliminar de favoritos
               } else {
+                DB.insertar(widget.id, widget.nombre);
+                DB.obtenerFavoritos(); // Agregar a favoritos
                 _addToFavorites(); // Agregar a favoritos
               }
             },
