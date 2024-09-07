@@ -117,7 +117,7 @@ Future<void> _checkIfFavorite() async {
     }
   }
 
-  // Función para eliminar de favoritos
+ 
   Future<void> _removeFromFavorites() async {
     try {
       String apiUrl = '192.168.0.16';

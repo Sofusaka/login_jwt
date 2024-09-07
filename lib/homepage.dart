@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login_jwt/db.dart';
 import 'package:login_jwt/login_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_jwt/producto_single.dart';
@@ -107,6 +108,13 @@ class _HomepageState extends State<Homepage> {
               });
             },
           ),
+
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              DB.eliminarTodos();
+              DB.obtenerFavoritos();
+              await _loginService.logoutUser(); })
         ],
       ),
       body: Container(
@@ -117,7 +125,7 @@ class _HomepageState extends State<Homepage> {
           boxShadow: const [
             BoxShadow(
               color: Colors.grey,
-              offset: Offset(0.0, 1.0), //(x,y)
+              offset: Offset(0.0, 1.0), 
               blurRadius: 6.0,
             ),
           ],
@@ -153,6 +161,21 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 }
 
 enum ViewType { grid, list }

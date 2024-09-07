@@ -16,25 +16,23 @@ class DB {
   }
 
 
+static Future<void> insertar(int id, String nombre) async {
+  Database database = await _openDB();
 
-
-  static Future<List<FavoritosClass>> favoritos() async {
-    Database database = await _openDB();
-    final List<Map<String, dynamic>> favoritosMap = await database.query("favoritos");
-
-    return List.generate(favoritosMap.length,
-            (i) => FavoritosClass(
-              id: favoritosMap[i]['idPRODUCTO'],
-              nombre: favoritosMap[i]['NOMBRE'],
-            ));
+  // Verificar si el producto ya está en favoritos
+  var existing = await database.rawQuery("SELECT * FROM favoritos WHERE id = ?", [id]);
+  
+  if (existing.isNotEmpty) {
+    print("El producto ya está en favoritos");
+    return;
   }
 
-   static Future<void> insertar(int id, String nombre) async {
-    Database database = await _openDB();
-    var resultado = await database.rawInsert("INSERT INTO favoritos (id, nombre) VALUES ($id, '$nombre')");
-    print("Resultado: $resultado");
+  // Si no existe, proceder con la inserción
+  var resultado = await database.rawInsert("INSERT INTO favoritos (id, nombre) VALUES (?, ?)", [id, nombre]);
+  print("Resultado: $resultado");
+}
 
-  }
+
 
 static Future<void> eliminar(int id) async {
   Database database = await _openDB();

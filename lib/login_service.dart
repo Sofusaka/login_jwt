@@ -69,4 +69,20 @@ Future<void> checkLoginStatus() async {
     }
     return null;
   }
+
+
+  Future<void> logoutUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('JWT_token'); // Eliminar el JWT del almacenamiento
+  print('JWT eliminado, usuario desconectado.');
+  
+  // Redirigir a la pantalla de login
+  Get.offAll(Login()); // Navegar a la pantalla de login y limpiar el historial de navegación
+}
+
+
+
+
+
+
 }
